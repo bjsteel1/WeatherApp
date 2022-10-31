@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btnLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Location"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/ivSettings"
         android:layout_width="50dp"
@@ -42,5 +32,64 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.1" />
+
+    <TextView
+        android:id="@+id/tvLocationName"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center|right"
+        android:text="Saginaw, MI"
+        android:textColor="#000000"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/ivSearch"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <ImageView
+        android:id="@+id/ivSearch"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvLocationName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tvLocationName"
+        app:layout_constraintTop_toTopOf="@+id/tvLocationName"
+        app:srcCompat="@drawable/search" />
+
+    <TextView
+        android:id="@+id/tvLocationInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current Location 43.4195° N, 83.9508° W"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="@+id/ivSearch"
+        app:layout_constraintStart_toEndOf="@+id/ivLocation"
+        app:layout_constraintTop_toBottomOf="@+id/tvLocationName" />
+
+    <ImageView
+        android:id="@+id/ivLocation"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvLocationInfo"
+        app:layout_constraintEnd_toStartOf="@+id/tvLocationInfo"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@+id/tvLocationName"
+        app:layout_constraintTop_toTopOf="@+id/tvLocationInfo"
+        app:srcCompat="@drawable/location" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

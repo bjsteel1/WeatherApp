@@ -9,7 +9,8 @@ import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
     //create necessary views for main activity - Ivy
-    Button btnLocation;
+    ImageView ivLocation;
+    ImageView ivSearch;
     ImageView ivClock;
     ImageView ivSettings;
 
@@ -19,15 +20,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //initializing views
-        btnLocation = findViewById(R.id.btnLocation);
+        ivLocation = findViewById(R.id.ivLocation);
+        ivLocation.setImageResource(R.drawable.location);
+        ivSearch = findViewById(R.id.ivSearch);
+        ivSearch.setImageResource(R.drawable.search);
+        ivSearch = findViewById(R.id.ivSearch);
         ivClock = findViewById(R.id.ivClock);
         ivClock.setImageResource(R.drawable.clock);
         ivSettings = findViewById(R.id.ivSettings);
         ivSettings.setImageResource(R.drawable.settings);
 
-        //ivLocation onClickListener that brings the user to the LocationActivity when the
+        //ivSearch onClickListener that brings the user to the LocationActivity when the
         //magnifying glass image is clicked
-        btnLocation.setOnClickListener(view -> {
+        ivSearch.setOnClickListener(view -> {
             startActivity(new Intent(MainActivity.this, LocationActivity.class));
         });
 
