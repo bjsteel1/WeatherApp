@@ -34,7 +34,6 @@ public class LocationActivity extends AppCompatActivity {
     RecyclerView recLocations;
     String TAG = "MYTAG";
 
-
     ArrayList<Location> arlLocations;
     ArrayList<String> arlDefaultLocations;
     RequestQueue queue;
@@ -104,29 +103,34 @@ public class LocationActivity extends AppCompatActivity {
         String URL_City = "";
         String URL_2 = "&days=7&aqi=no&alerts=no";
 
-        String url = URL_1 + arlDefaultLocations.get(0) + URL_2;
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                response -> {
-                    try {
-                        JSONObject jLocation = response.getJSONObject("location");
-                        String strName = jLocation.getString("name");
-                        String strCountry = jLocation.getString("country");
 
-                        JSONObject jTemperature = response.getJSONObject("current");
-                        double dblTemperature = jTemperature.getDouble("temp_f");
+        for(int i = 0; i < arlDefaultLocations.size(); i++) {
+            String url = URL_1 + arlDefaultLocations.get(i) + URL_2;
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                    response -> {
+                        try {
+                            JSONObject jLocation = response.getJSONObject("location");
+                            String strName = jLocation.getString("name");
+                            String strCountry = jLocation.getString("country");
+                            if(strCountry.equalsIgnoreCase("United States of America"))
+                                strCountry = "USA";
 
-                        Location l = new Location(strName + ", " + strCountry, 10, 10, dblTemperature, 10);
-                        arlLocations.add(l);
+                            JSONObject jTemperature = response.getJSONObject("current");
+                            double dblTemperature = jTemperature.getDouble("temp_f");
 
-                        adapter.notifyDataSetChanged();
-                    } catch(Exception e){
-                        e.printStackTrace();
-                    }
-                },
-                error -> {
+                            Location l = new Location(strName + ", " + strCountry, 10, 10, dblTemperature, 10);
+                            arlLocations.add(l);
 
-                });
-        queue.add(request);
+                            adapter.notifyDataSetChanged();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    },
+                    error -> {
+
+                    });
+            queue.add(request);
+        }
 
     }
 
@@ -144,13 +148,11 @@ public class LocationActivity extends AppCompatActivity {
         @Override
         public LocationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(context).inflate(R.layout.layout_location_item, parent, false);
-            Log.d(TAG, "onCreateViewHolder: CALLED");
             return new LocationViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull LocationViewHolder holder, int position) {
-            Log.d(TAG, "onBindViewHolder: CALLED");
             Location location = arlLocations.get(position);
 
             holder.txtCity.setText(location.cityName);
