@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     TextView tvTempHighLow;
     TextView tvTempWind;
 
+    //create necessary list views for main activity
+    ListView lstForecast;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
         ivClock.setImageResource(R.drawable.clock);
         ivSettings = findViewById(R.id.ivSettings);
         ivSettings.setImageResource(R.drawable.settings);
+
+        //initializing list views
+        lstForecast = findViewById(R.id.lstForecast);
 
         //initializing text views
         tvLocationName = findViewById(R.id.tvLocationName);
