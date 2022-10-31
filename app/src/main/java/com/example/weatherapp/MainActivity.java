@@ -5,11 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
     Button btnLocation;
     Button btnHourly;
-    Button btnSettings;
+    ImageView ivSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
         btnLocation = findViewById(R.id.btnLocation);
         btnHourly = findViewById(R.id.btnHourly);
-        btnSettings = findViewById(R.id.btnSettings);
+        ivSettings = findViewById(R.id.ivSettings);
+        ivSettings.setImageResource(R.drawable.settings);
 
         // Adding some buttons to navigate through activities when testing //
         btnLocation.setOnClickListener(view -> {
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         btnHourly.setOnClickListener(view -> {
             startActivity(new Intent(MainActivity.this, HourlyActivity.class));
         });
-        btnSettings.setOnClickListener(view -> {
+        ivSettings.setOnClickListener(view -> {
             startActivity(new Intent(MainActivity.this, Settings.class));
         });
 
