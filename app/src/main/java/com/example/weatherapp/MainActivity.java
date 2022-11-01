@@ -9,6 +9,16 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     //create necessary image views for main activity
     ImageView ivLocation;
@@ -28,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
     //create necessary list views for main activity
     ListView lstForecast;
 
+    ArrayList<Location> arrLocation;
+    RequestQueue queue;
+    LocationActivity.LocationAdapter adapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
         ivSettings = findViewById(R.id.ivSettings);
         ivSettings.setImageResource(R.drawable.settings);
 
-        //initializing list views
-        lstForecast = findViewById(R.id.lstForecast);
 
         //initializing text views
         tvLocationName = findViewById(R.id.tvLocationName);
@@ -54,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
         tvTempFeels = findViewById(R.id.tvTempFeels);
         tvTempHighLow = findViewById(R.id.tvTempHighLow);
         tvTempWind = findViewById(R.id.tvTempWind);
+
+        queue = Volley.newRequestQueue(this);
+        lstForecast = findViewById(R.id.lstForecast);
+        arrLocation = new ArrayList<>();
+//        adapter = new LocationActivity.LocationAdapter(arrLocation, this);
+//        lstPerson.setAdapter(adapter);
 
         //ivSearch onClickListener that brings the user to the LocationActivity when the
         //magnifying glass image is clicked
@@ -73,7 +92,38 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, Settings.class));
         });
 
+    }
 
+    public void fetchData(){
+        String url = "https://api.weatherapi.com/v1/forecast.json?key=0d2ee64c9feb4ccc9ff23426222810&q=48601&days=7&aqi=no&alerts=no";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                url,null,
+                response -> {
+                    try {
+                            JSONObject jLocation = response.getJSONObject("location");
+                            String city = jLocation.getString("name");
+                            int lat = jLocation.getInt("lat");
+                            int lon = jLocation.getInt("lon");
+                            String txtLocationInfo = "Current Location " + lat + " lat " + lon + " lon.";
+                            JSONObject jCurrent = response.getJSONObject("current");
+                            int temp_f = jCurrent.getInt("temp_f");
+                            JSONObject jCondition = response.getJSONObject("condition");
+                            int tempfeels_f = jCondition.getInt("feelslike_f");
+                            int tempHigh;
+                            int tempLow;
+                            int windSpeed =  jCondition.getInt("wind_mph");
+                            String imageURL = jCondition.getString("icon");
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                });
+
+        //Add request to queue
+        queue.add(request);
 
     }
 }
