@@ -1,12 +1,14 @@
 package com.example.weatherapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -38,19 +41,24 @@ public class LocationActivity extends AppCompatActivity {
     ArrayList<String> arlDefaultLocations;
     RequestQueue queue;
     LocationAdapter adapter;
+    ProgressBar pbCircle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
 
+        //Instantiate ArrayLists
         arlLocations = new ArrayList<>();
-
+        arlDefaultLocations = new ArrayList<>();
+        //Instantiate controls
         etSearch = findViewById(R.id.etSearch);
         btnAdd = findViewById(R.id.btnAdd);
         recLocations = findViewById(R.id.recLocations);
+        pbCircle = findViewById(R.id.pbCircle);
 
-        arlDefaultLocations = new ArrayList<>();
+        //Add default locations
+        //  ---- Add persistence so this doesn't have to load each time ---- //
         arlDefaultLocations.add("Detroit");
         arlDefaultLocations.add("New-York-City");
         arlDefaultLocations.add("Chicago");
@@ -61,7 +69,6 @@ public class LocationActivity extends AppCompatActivity {
         arlDefaultLocations.add("San-Diego");
         arlDefaultLocations.add("Dallas");
         arlDefaultLocations.add("San-Jose");
-
         arlDefaultLocations.add("Paris");
         arlDefaultLocations.add("London");
         arlDefaultLocations.add("Bangkok");
@@ -73,15 +80,15 @@ public class LocationActivity extends AppCompatActivity {
         arlDefaultLocations.add("Seoul");
         arlDefaultLocations.add("Sydney");
 
+        //Fetch data and add into RecyclerView
         queue = Volley.newRequestQueue(this);
         fetchData();
-
-
         adapter = new LocationAdapter(arlLocations, this);
         recLocations.setAdapter(adapter);
         recLocations.setLayoutManager(new LinearLayoutManager(this));
 
 
+        //Swipe item controls
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -95,33 +102,48 @@ public class LocationActivity extends AppCompatActivity {
             }
         });
         helper.attachToRecyclerView(recLocations);
+
+
+        //Add location that the user set in the EditText
+        btnAdd.setOnClickListener(view -> {
+            insertLocation(etSearch.getText().toString());
+        });
     }
 
-    public void fetchData(){
-     //   String url = "https://api.weatherapi.com/v1/forecast.json?key=0d2ee64c9feb4ccc9ff23426222810&q=London&days=7&aqi=no&alerts=no";
-        String URL_1 ="https://api.weatherapi.com/v1/forecast.json?key=0d2ee64c9feb4ccc9ff23426222810&q=";
-        String URL_City = "";
-        String URL_2 = "&days=7&aqi=no&alerts=no";
 
+    public void fetchData() {
+        //   String url = "https://api.weatherapi.com/v1/forecast.json?key=0d2ee64c9feb4ccc9ff23426222810&q=London&days=7&aqi=no&alerts=no";
+        String url_1 = "https://api.weatherapi.com/v1/forecast.json?key=0d2ee64c9feb4ccc9ff23426222810&q=";
+        String url_2 = "&days=7&aqi=no&alerts=no";
 
-        for(int i = 0; i < arlDefaultLocations.size(); i++) {
-            String url = URL_1 + arlDefaultLocations.get(i) + URL_2;
+        //Insert's user set location
+        //Currently pointed at Saginaw, MI. Needs to get intent object from other activities
+
+        for (int i = 0; i < arlDefaultLocations.size(); i++) {
+            String url = url_1 + arlDefaultLocations.get(i) + url_2;
+            pbCircle.setVisibility(View.VISIBLE);
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                     response -> {
                         try {
                             JSONObject jLocation = response.getJSONObject("location");
                             String strName = jLocation.getString("name");
                             String strCountry = jLocation.getString("country");
-                            if(strCountry.equalsIgnoreCase("United States of America"))
+                            if (strCountry.equalsIgnoreCase("United States of America"))
                                 strCountry = "USA";
 
-                            JSONObject jTemperature = response.getJSONObject("current");
-                            double dblTemperature = jTemperature.getDouble("temp_f");
+                            double dblLatitude = jLocation.getDouble("lat");
+                            double dblLongitude = jLocation.getDouble("lon");
 
-                            Location l = new Location(strName + ", " + strCountry, 10, 10, dblTemperature, 10);
+                            JSONObject jTemperature = response.getJSONObject("current");
+                            double dblF_Temperature = jTemperature.getDouble("temp_f");
+                            double dblC_Temperature = jTemperature.getDouble("temp_c");
+
+                            Location l = new Location(strName + ", " + strCountry,
+                                    dblLatitude, dblLongitude, dblF_Temperature, dblC_Temperature);
                             arlLocations.add(l);
 
                             adapter.notifyDataSetChanged();
+                            pbCircle.setVisibility(View.INVISIBLE);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -131,49 +153,77 @@ public class LocationActivity extends AppCompatActivity {
                     });
             queue.add(request);
         }
-
     }
 
+    public void insertLocation(String strSetLocation) {
+        String url_1 = "https://api.weatherapi.com/v1/forecast.json?key=0d2ee64c9feb4ccc9ff23426222810&q=";
+        String url_2 = "&days=7&aqi=no&alerts=no";
 
-    class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder> {
-        ArrayList<Location> arlLocations;
-        Context context;
+        //Get intent object from other activity?
+        //for now, default to Saginaw
 
-        public LocationAdapter(ArrayList<Location> arlLocations, Context context) {
-            this.arlLocations = arlLocations;
-            this.context = context;
-        }
+        String url = url_1 + strSetLocation + url_2;
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    pbCircle.setVisibility(View.VISIBLE);
+                    try {
+                        JSONObject jLocation = response.getJSONObject("location");
+                        String strName = jLocation.getString("name");
+                        String strCountry = jLocation.getString("country");
+                        if (strCountry.equalsIgnoreCase("United States of America")
+                                || strCountry.equalsIgnoreCase("USA United States of America"))
+                            strCountry = "USA";
 
-        @NonNull
-        @Override
-        public LocationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(context).inflate(R.layout.layout_location_item, parent, false);
-            return new LocationViewHolder(view);
-        }
+                        double dblLatitude = jLocation.getDouble("lat");
+                        double dblLongitude = jLocation.getDouble("lon");
 
-        @Override
-        public void onBindViewHolder(@NonNull LocationViewHolder holder, int position) {
-            Location location = arlLocations.get(position);
+                        JSONObject jTemperature = response.getJSONObject("current");
+                        double dblF_Temperature = jTemperature.getDouble("temp_f");
+                        double dblC_Temperature = jTemperature.getDouble("temp_c");
 
-            holder.txtCity.setText(location.cityName);
-            holder.txtTemperature.setText(location.f_temperature + "");
-        }
+                        Location l = new Location(strName + ", " + strCountry,
+                                dblLatitude, dblLongitude, dblF_Temperature, dblC_Temperature);
+                        arlLocations.add(0, l);
 
-        @Override
-        public int getItemCount() {
-            return arlLocations.size();
-        }
+                        adapter.notifyDataSetChanged();
+                        pbCircle.setVisibility(View.INVISIBLE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                },
+                error -> {
+                    //If the user entered an invalid location, prompt an error dialog box
+                    AlertDialog.Builder errorBuilder = new AlertDialog.Builder(LocationActivity.this);
+                    errorBuilder.setMessage("'" + etSearch.getText().toString() + "' was NOT found!");
+                    errorBuilder.setTitle("ALERT!");
+                    errorBuilder.setCancelable(false);
+                    errorBuilder.setPositiveButton("OK", (DialogInterface.OnClickListener) (dialog, which) -> {
+                        dialog.cancel();
+                    });
 
-        // ------------------------------------------------------------------------- //
-        class LocationViewHolder extends RecyclerView.ViewHolder{
+                    AlertDialog ad = errorBuilder.create();
+                    ad.show();
+                });
+        queue.add(request);
+    }
 
-            TextView txtCity;
-            TextView txtTemperature;
-            public LocationViewHolder(@NonNull View itemView) {
-                super(itemView);
-                txtCity = itemView.findViewById(R.id.txtCity);
-                txtTemperature = itemView.findViewById(R.id.txtTemperature);
-            }
-        }
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }
