@@ -7,12 +7,63 @@
     tools:context=".HourlyActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txtLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="HOURLY"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Saginaw, Mi"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtMainTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="128dp"
+        android:text="70° F"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/txtLocation"
+        app:layout_constraintTop_toTopOf="@+id/txtLocation" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Current Location: "
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/txtLocation"
+        app:layout_constraintTop_toBottomOf="@+id/txtLocation" />
+
+    <TextView
+        android:id="@+id/txtCoordinated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="43.4195°, 83.9508°"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/txtMainTemp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/guideline6" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
