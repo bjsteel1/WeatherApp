@@ -2,6 +2,9 @@ package com.example.weatherapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -40,8 +43,22 @@ public class Settings extends AppCompatActivity {
         });
         //On Click Listener for Cancel Image View
         //Used for canceling current changes to settings then returning to home screen
+        //Displays Dialogue Box and makes the user confirm they want to return
         ivCancel.setOnClickListener(view -> {
-
+            new AlertDialog.Builder(this)
+                    .setTitle("Warning")
+                    .setMessage("Are you sure you want to return to home screen? You have unsaved changes.")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("No",null)
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .show();
         });
         //On Click Listener for Reset Button
         //Used for returning all settings to default values
