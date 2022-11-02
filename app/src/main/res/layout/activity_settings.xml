@@ -6,6 +6,78 @@
     android:layout_height="match_parent"
     tools:context=".Settings">
 
+    <RadioGroup
+        android:id="@+id/rdgTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/rdgDay"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/txtSettings">
+
+        <RadioButton
+            android:id="@+id/rdbF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="°F" />
+
+        <RadioButton
+            android:id="@+id/rdbC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="°C" />
+
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/rdgTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/btnReset"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/rdgDay">
+
+        <RadioButton
+            android:id="@+id/rdb12Hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12 Hour" />
+
+        <RadioButton
+            android:id="@+id/rdb24Hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="24 Hour" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/rdgDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/rdgTime"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/rdgTemp">
+
+        <RadioButton
+            android:id="@+id/rdb7Day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="7 Day" />
+
+        <RadioButton
+            android:id="@+id/rdb14Day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="14 Day" />
+    </RadioGroup>
+
     <TextView
         android:id="@+id/txtSettings"
         android:layout_width="wrap_content"
@@ -25,27 +97,27 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/txtTempOptions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Tempature Options:"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintBottom_toTopOf="@+id/txtLocationDay"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/txtSettings" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/txtLocationDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Location Forecast Day Options:"
-        app:layout_constraintBottom_toTopOf="@+id/textView5"
+        app:layout_constraintBottom_toTopOf="@+id/txtLocationTime"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/txtTempOptions" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/txtLocationTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -53,7 +125,7 @@
         android:text="Location Forecast Time Options:"
         app:layout_constraintBottom_toTopOf="@+id/btnReset"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/txtLocationDay" />
 
     <Button
         android:id="@+id/btnReset"
@@ -63,7 +135,7 @@
         android:text="Reset to default"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/txtLocationTime" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline9"
@@ -73,7 +145,7 @@
         app:layout_constraintGuide_percent="0.75" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/ivSave"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="32dp"
@@ -83,7 +155,7 @@
         app:srcCompat="@drawable/save" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/ivCancel"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="32dp"
@@ -100,7 +172,7 @@
         android:layout_marginTop="32dp"
         android:text="Save"
         android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/ivSave"
         app:layout_constraintTop_toTopOf="@+id/guideline9" />
 
     <TextView
@@ -111,7 +183,7 @@
         android:layout_marginTop="32dp"
         android:text="Cancel"
         android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintStart_toEndOf="@+id/ivCancel"
         app:layout_constraintTop_toTopOf="@+id/guideline9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
