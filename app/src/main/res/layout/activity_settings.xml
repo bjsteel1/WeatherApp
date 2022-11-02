@@ -31,7 +31,7 @@
     </RadioGroup>
 
     <RadioGroup
-        android:id="@+id/rdgTime"
+        android:id="@+id/rdgHour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/rdgTime"
+        app:layout_constraintBottom_toTopOf="@+id/rdgHour"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/rdgTemp">
 
