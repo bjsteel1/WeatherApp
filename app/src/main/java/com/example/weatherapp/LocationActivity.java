@@ -82,11 +82,11 @@ public class LocationActivity extends AppCompatActivity {
 
         //Fetch data and add into RecyclerView
         queue = Volley.newRequestQueue(this);
+        insertLocation("Saginaw");
         fetchData();
         adapter = new LocationAdapter(arlLocations, this);
         recLocations.setAdapter(adapter);
         recLocations.setLayoutManager(new LinearLayoutManager(this));
-
 
         //Swipe item controls
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -138,8 +138,15 @@ public class LocationActivity extends AppCompatActivity {
                             double dblF_Temperature = jTemperature.getDouble("temp_f");
                             double dblC_Temperature = jTemperature.getDouble("temp_c");
 
+                            String jImg = response.getJSONObject("forecast")
+                                    .getJSONArray("forecastday")
+                                    .getJSONObject(0)
+                                    .getJSONObject("day")
+                                    .getJSONObject("condition")
+                                    .getString("icon");
                             Location l = new Location(strName + ", " + strCountry,
-                                    dblLatitude, dblLongitude, dblF_Temperature, dblC_Temperature);
+                                    dblLatitude, dblLongitude, dblF_Temperature, dblC_Temperature,
+                                    "https:" + jImg);
                             arlLocations.add(l);
 
                             adapter.notifyDataSetChanged();
@@ -181,8 +188,15 @@ public class LocationActivity extends AppCompatActivity {
                         double dblF_Temperature = jTemperature.getDouble("temp_f");
                         double dblC_Temperature = jTemperature.getDouble("temp_c");
 
+                        String jImg = response.getJSONObject("forecast")
+                                .getJSONArray("forecastday")
+                                .getJSONObject(0)
+                                .getJSONObject("day")
+                                .getJSONObject("condition")
+                                .getString("icon");
                         Location l = new Location(strName + ", " + strCountry,
-                                dblLatitude, dblLongitude, dblF_Temperature, dblC_Temperature);
+                                dblLatitude, dblLongitude, dblF_Temperature, dblC_Temperature,
+                                "https:" + jImg);
                         arlLocations.add(0, l);
 
                         adapter.notifyDataSetChanged();

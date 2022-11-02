@@ -8,13 +8,15 @@ public class Location {
     double longitude;
     double f_temperature;
     double c_temperature;
+    String picURL;
 
-    public Location(String cityName, double latitude, double longitude, double f_temperature, double c_temperature) {
+    public Location(String cityName, double latitude, double longitude, double f_temperature, double c_temperature, String picURL) {
         this.cityName = cityName;
         this.latitude = latitude;
         this.longitude = longitude;
         this.f_temperature = f_temperature;
         this.c_temperature = c_temperature;
+        this.picURL = picURL;
     }
 
     @Override
