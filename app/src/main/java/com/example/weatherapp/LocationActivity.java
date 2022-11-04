@@ -167,6 +167,7 @@ public class LocationActivity extends AppCompatActivity {
     public void insertMassLocations(JSONArray jsonArray) throws JSONException {
         for (int i = 0; i < jsonArray.length(); i++) {
             String url = url_1 + jsonArray.getString(i) + url_2;
+            Log.d(TAG, "insertMassLocations: " + jsonArray.getString(i));
             pbCircle.setVisibility(View.VISIBLE);
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                     response -> {
@@ -219,15 +220,15 @@ public class LocationActivity extends AppCompatActivity {
         //Populate default locations to view
         arlDefaultLocations.add("Saginaw");
         arlDefaultLocations.add("Detroit");
-        arlDefaultLocations.add("NewYorkCity");
+        arlDefaultLocations.add("New York City");
         arlDefaultLocations.add("Chicago");
         arlDefaultLocations.add("Houston");
         arlDefaultLocations.add("Phoenix");
         arlDefaultLocations.add("Philadelphia");
-        arlDefaultLocations.add("SanAntonio");
-        arlDefaultLocations.add("SanDiego");
+        arlDefaultLocations.add("San Antonio");
+        arlDefaultLocations.add("San Diego");
         arlDefaultLocations.add("Dallas");
-        arlDefaultLocations.add("SanJose");
+        arlDefaultLocations.add("San Jose");
         arlDefaultLocations.add("Paris");
         arlDefaultLocations.add("London");
         arlDefaultLocations.add("Bangkok");
@@ -256,7 +257,8 @@ public class LocationActivity extends AppCompatActivity {
         //Insert default locations into the adapter
         spEditor.putString("jLocations", jsonArray.toString());
         spEditor.apply();
-        insertMassLocations(jsonArray);
+     //   insertMassLocations(jsonArray);
+        Log.d(TAG, "insertDefault: " + jsonArray);
     }
 
     @Override
@@ -266,21 +268,31 @@ public class LocationActivity extends AppCompatActivity {
         saveData();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     public void fetchData(){
         //Get the JSON Array in the SharedPref and re-insert the locations into the adapter
         SharedPreferences sharedPref = getSharedPreferences("SharedLoc", MODE_PRIVATE);
         try{
-            //Insert locations into the adapter
-            JSONArray jsonArray = new JSONArray(sharedPref.getString("jLocations", ""));
-            Log.d(TAG, "fetchData: " + jsonArray);
-            insertMassLocations(jsonArray);
-            Log.d(TAG, "fetchData: " + jsonArray);
+            String strJSON = sharedPref.getString("jLocations", "EMPTY");
             //If there were no locations found in the JSON Array, populate the array and adapter
             //  with default locations
-            if(jsonArray.length() == 0){
+            if(strJSON.equalsIgnoreCase("EMPTY")){
                 insertDefault();
+                JSONArray jsonArray = new JSONArray(sharedPref.getString("jLocations", ""));
+                for(int i = 0; i < jsonArray.length(); i++){
+                    insertSingleLocation(jsonArray.getString(i));
+                }
+                Log.d(TAG, "fetchData Default: " + jsonArray);
+            } else {
+                //Insert locations into the adapter
+                JSONArray jsonArray = new JSONArray(sharedPref.getString("jLocations", ""));
+                insertMassLocations(jsonArray);
+                Log.d(TAG, "fetchData: " + jsonArray);
             }
-            Log.d(TAG, "fetchData: " + jsonArray);
         } catch(Exception e){
             e.printStackTrace();
         }
