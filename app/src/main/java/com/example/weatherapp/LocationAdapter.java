@@ -1,6 +1,7 @@
 package com.example.weatherapp;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -60,11 +62,30 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         else
             holder.txtTemperature.setText(c_temp);
 
-        holder.txtCity.setOnClickListener(view -> {
-            arlLocations.remove(position);
-            arlLocations.add(0, location);
-            notifyDataSetChanged();
+        //Getting strange errors when using the parameter, position, when trying to get the index
+        //  of the current item being clicked. Using a redundant int variable seems to fix it
+        int p = position;
+        holder.txtCity.setOnLongClickListener(view -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage("Would you like to set " + holder.txtCity.getText() + " as the default location?")
+                            .setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            arlLocations.remove(p);
+                            arlLocations.add(0, location);
+                            notifyDataSetChanged();
+                        }
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+            return true;
         });
+
     }
 
 
@@ -72,6 +93,10 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     @Override
     public int getItemCount() {
         return arlLocations.size();
+    }
+
+    public String getItem(int position){
+        return arlLocations.get(position).cityName;
     }
 
     class LocationViewHolder extends RecyclerView.ViewHolder{
