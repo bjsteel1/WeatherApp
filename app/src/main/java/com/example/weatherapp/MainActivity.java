@@ -3,16 +3,21 @@ package com.example.weatherapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,11 +30,13 @@ public class MainActivity extends AppCompatActivity {
     ImageView ivSearch;
     ImageView ivClock;
     ImageView ivSettings;
+    ImageView ivPic;
 
     //create necessary text views for main activity
     TextView tvLocationName;
     TextView tvLocationInfo;
     TextView tvForecast;
+    TextView tvImgDesc;
     TextView tvTemp;
     TextView tvTempFeels;
     TextView tvTempHighLow;
@@ -38,15 +45,24 @@ public class MainActivity extends AppCompatActivity {
     //create necessary list views for main activity
     ListView lstForecast;
 
+    ProgressBar pbLoading;
+
     ArrayList<Location> arrLocation;
     RequestQueue queue;
-    LocationActivity.LocationAdapter adapter;
+    LocationAdapter adapter;
+    String tempScale, city, txtLocationInfo, condition, imageURL;
+    int temp, tempFeels, tempHigh, tempLow, windSpeed;
 
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Get shared prefs
+        sharedPreferences = getSharedPreferences("SharedPrefs",MODE_PRIVATE);
+        tempScale = sharedPreferences.getString("Unit","F");
 
         //initializing image views
         ivLocation = findViewById(R.id.ivLocation);
@@ -57,16 +73,19 @@ public class MainActivity extends AppCompatActivity {
         ivClock.setImageResource(R.drawable.clock);
         ivSettings = findViewById(R.id.ivSettings);
         ivSettings.setImageResource(R.drawable.settings);
-
+        ivPic = findViewById(R.id.ivPic);
 
         //initializing text views
         tvLocationName = findViewById(R.id.tvLocationName);
         tvLocationInfo = findViewById(R.id.tvLocationInfo);
         tvForecast = findViewById(R.id.tvForecast);
+        tvImgDesc = findViewById(R.id.tvImgDesc);
         tvTemp = findViewById(R.id.tvTemp);
         tvTempFeels = findViewById(R.id.tvTempFeels);
         tvTempHighLow = findViewById(R.id.tvTempHighLow);
         tvTempWind = findViewById(R.id.tvTempWind);
+
+        pbLoading = findViewById(R.id.pbLoading);
 
         queue = Volley.newRequestQueue(this);
         lstForecast = findViewById(R.id.lstForecast);
@@ -77,6 +96,9 @@ public class MainActivity extends AppCompatActivity {
         //ivSearch onClickListener that brings the user to the LocationActivity when the
         //magnifying glass image is clicked
         ivSearch.setOnClickListener(view -> {
+            startActivity(new Intent(MainActivity.this, LocationActivity.class));
+        });
+        tvLocationName.setOnClickListener(view->{
             startActivity(new Intent(MainActivity.this, LocationActivity.class));
         });
 
@@ -92,30 +114,39 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, Settings.class));
         });
 
+        // Fetch the data & populate the views TODO: Pull location from sharedprefs
+        fetchData("Saginaw, MI");
     }
 
-    public void fetchData(){
-        String url = "https://api.weatherapi.com/v1/forecast.json?key=0d2ee64c9feb4ccc9ff23426222810&q=48601&days=7&aqi=no&alerts=no";
+    // Call API and load in all weather data to variables
+    private void fetchData(String location){
+        // Display progress bar until loading is complete
+        setAllVisibility(View.INVISIBLE);
+        pbLoading.setVisibility(View.VISIBLE);
+
+        String url = "https://api.weatherapi.com/v1/forecast.json?key=0d2ee64c9feb4ccc9ff23426222810&q=" + location + "&days=7&aqi=no&alerts=no";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 url,null,
                 response -> {
                     try {
                             JSONObject jLocation = response.getJSONObject("location");
-                            String city = jLocation.getString("name");
-                            int lat = jLocation.getInt("lat");
-                            int lon = jLocation.getInt("lon");
-                            String txtLocationInfo = "Current Location " + lat + " lat " + lon + " lon.";
+                            city = jLocation.getString("name") + ", " + jLocation.getString("region");
+                            double lat = jLocation.getDouble("lat");
+                            double lon = jLocation.getDouble("lon");
+                            txtLocationInfo = "Current Location: " + lat + "°N, " + lon + " °W";
                             JSONObject jCurrent = response.getJSONObject("current");
-                            int temp_f = jCurrent.getInt("temp_f");
-                            JSONObject jCondition = response.getJSONObject("condition");
-                            int tempfeels_f = jCondition.getInt("feelslike_f");
-                            int tempHigh;
-                            int tempLow;
-                            int windSpeed =  jCondition.getInt("wind_mph");
-                            String imageURL = jCondition.getString("icon");
-
-
+                            temp = jCurrent.getInt("temp_" + tempScale.toLowerCase());
+                            JSONObject jCondition = jCurrent.getJSONObject("condition");
+                            tempFeels = jCurrent.getInt("feelslike_" + tempScale.toLowerCase());
+                            condition = jCondition.getString("text");
+                            JSONObject jDay = response.getJSONObject("forecast").getJSONArray("forecastday").getJSONObject(0).getJSONObject("day");
+                            tempHigh = jDay.getInt("maxtemp_" + tempScale.toLowerCase());
+                            tempLow = jDay.getInt("mintemp_" + tempScale.toLowerCase());
+                            windSpeed =  jCurrent.getInt("wind_mph");
+                            imageURL = "https:" + jCondition.getString("icon");
+                            populateViews();
                     } catch (JSONException e) {
+                        Log.d("WeatherApp", e.getMessage());
                         e.printStackTrace();
                     }
                 },
@@ -124,6 +155,32 @@ public class MainActivity extends AppCompatActivity {
 
         //Add request to queue
         queue.add(request);
+    }
 
+    // Populate views w/ weather data
+    private void populateViews(){
+        tvLocationName.setText(city);
+        tvLocationInfo.setText(txtLocationInfo);
+        tvImgDesc.setText(condition);
+        tvTemp.setText(temp + "\u00B0 " + tempScale);
+        tvTempFeels.setText("Feels like: " + tempFeels + "\u00B0 " + tempScale);
+        tvTempHighLow.setText("H: " + tempHigh + "\u00B0 " + tempScale + "     L: " + tempLow + "\u00B0 " + tempScale);
+        tvTempWind.setText(windSpeed + " mph");
+        Picasso.get().load(imageURL).into(ivPic);
+
+        setAllVisibility(View.VISIBLE);
+        pbLoading.setVisibility(View.INVISIBLE);
+    }
+
+    // Method to quick toggle visibility of all views that need to be loaded from fetchData
+    private void setAllVisibility(int visibility){
+        tvLocationName.setVisibility(visibility);
+        tvLocationInfo.setVisibility(visibility);
+        tvImgDesc.setVisibility(visibility);
+        tvTemp.setVisibility(visibility);
+        tvTempFeels.setVisibility(visibility);
+        tvTempHighLow.setVisibility(visibility);
+        tvTempWind.setVisibility(visibility);
+        lstForecast.setVisibility(visibility);
     }
 }
