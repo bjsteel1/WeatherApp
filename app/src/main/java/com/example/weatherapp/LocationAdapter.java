@@ -1,3 +1,7 @@
+/**
+ * RecyclerView.Adapter class for Location.
+ * @author: Jon Maddocks
+ */
 package com.example.weatherapp;
 
 import android.content.Context;
@@ -9,15 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.squareup.picasso.Picasso;
-
 import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder> {
@@ -68,32 +68,22 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         holder.txtCity.setOnLongClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage("Would you like to set " + holder.txtCity.getText() + " as the default location?")
-                            .setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            arlLocations.remove(p);
-                            arlLocations.add(0, location);
-                            notifyDataSetChanged();
-                        }
-                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                        }
-                    });
+                            .setCancelable(false).setPositiveButton("Yes", (dialogInterface, i) -> {
+                                arlLocations.remove(p);
+                                arlLocations.add(0, location);
+                                notifyDataSetChanged();
+                            }).setNegativeButton("No", (dialogInterface, i) -> dialogInterface.cancel());
             AlertDialog alert = builder.create();
             alert.show();
             return true;
         });
     }
-
-
-
+    //Return total number of locations
     @Override
     public int getItemCount() {
         return arlLocations.size();
     }
-
+    //Return item at certain index
     public String getItem(int position){
         return arlLocations.get(position).cityName;
     }
@@ -111,7 +101,5 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             imgSetLocation = itemView.findViewById(R.id.imgSetLocation);
             imgForecast = itemView.findViewById(R.id.imgForecast);
         }
-
-
     }
 }
