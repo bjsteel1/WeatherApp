@@ -1,3 +1,7 @@
+/**
+ * Location class.
+ * @author: Jon Maddocks
+ */
 package com.example.weatherapp;
 
 import java.util.ArrayList;
@@ -11,6 +15,7 @@ public class Location {
     double c_temperature;
     String picURL;
 
+    //Default constructor. Set Location to default elements
     public Location(){
         cityName = "Loading";
         latitude = 0;
@@ -41,7 +46,7 @@ public class Location {
     public int hashCode() {
         return Objects.hash(cityName, latitude, longitude, f_temperature, c_temperature);
     }
-
+    //Set location data into location
     public void loadLocation(String cityName, double latitude, double longitude, double f_temperature, double c_temperature, String picURL){
         this.cityName = cityName;
         this.latitude = latitude;

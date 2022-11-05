@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="url_part1">https://api.weatherapi.com/v1/forecast.json?key=0d2ee64c9feb4ccc9ff23426222810&amp;q=</string>
+    <string name="url_part2">&amp;days=7&amp;aqi=no&amp;alerts=no</string>
 </resources>
