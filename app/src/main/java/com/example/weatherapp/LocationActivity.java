@@ -105,6 +105,9 @@ public class LocationActivity extends AppCompatActivity {
     public void insertSingleLocation(String strSetLocation, int index) {
         String url = url_1 + strSetLocation + url_2;
         Log.d(TAG, "insertSingleLocation: " + strSetLocation);
+        Location l = new Location();
+        arlLocations.add(l);
+        adapter.notifyDataSetChanged();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     pbCircle.setVisibility(View.VISIBLE);
@@ -135,7 +138,7 @@ public class LocationActivity extends AppCompatActivity {
                                 .getString("icon");
 
                         //Create location
-                        Location l = new Location(strName + ", " + strCountry,
+                        l.loadLocation(strName + ", " + strCountry,
                                 dblLatitude, dblLongitude, dblF_Temperature, dblC_Temperature,
                                 "https:" + jImg);
 
@@ -284,6 +287,7 @@ public class LocationActivity extends AppCompatActivity {
         super.onStop();
         //Get adapter items and save them into the SharedPref
         saveData();
+
     }
 
     @Override
@@ -294,8 +298,11 @@ public class LocationActivity extends AppCompatActivity {
     public void fetchData(){
         //Get the JSON Array in the SharedPref and re-insert the locations into the adapter
         SharedPreferences sharedPref = getSharedPreferences("SharedLoc", MODE_PRIVATE);
+        SharedPreferences sharedSetLocation = getSharedPreferences("SharedPrefDefault", MODE_PRIVATE);
+
         try{
             String strJSON = sharedPref.getString("jLocations", "EMPTY");
+            String strDefault = sharedSetLocation.getString("default_location", "");
             //If there were no locations found in the JSON Array, populate the array and adapter
             //  with default locations
             if(strJSON.equalsIgnoreCase("EMPTY")){
@@ -313,6 +320,7 @@ public class LocationActivity extends AppCompatActivity {
                 insertMassLocations(jsonArray);
                 Log.d(TAG, "fetchData: " + jsonArray);
             }
+            Log.d(TAG, "Default Location: " + strDefault);
         } catch(Exception e){
             e.printStackTrace();
         }
