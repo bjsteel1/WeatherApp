@@ -94,7 +94,7 @@ public class LocationActivity extends AppCompatActivity {
 
         //Add location that the user set in the EditText
         btnAdd.setOnClickListener(view -> {
-            insertSingleLocation(etSearch.getText().toString());
+            insertSingleLocation(etSearch.getText().toString(), 1);
             etSearch.setText("");
         });
         //Set OnClick Listener for click event on Image, and send user back to Home page
@@ -103,8 +103,9 @@ public class LocationActivity extends AppCompatActivity {
         });
     }
 
-    public void insertSingleLocation(String strSetLocation) {
+    public void insertSingleLocation(String strSetLocation, int index) {
         String url = url_1 + strSetLocation + url_2;
+        Log.d(TAG, "insertSingleLocation: " + strSetLocation);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 response -> {
                     pbCircle.setVisibility(View.VISIBLE);
@@ -138,9 +139,20 @@ public class LocationActivity extends AppCompatActivity {
                         Location l = new Location(strName + ", " + strCountry,
                                 dblLatitude, dblLongitude, dblF_Temperature, dblC_Temperature,
                                 "https:" + jImg);
-                        arlLocations.add(1, l);
 
-                        adapter.notifyItemInserted(1);
+                        if(index == 1){
+                            arlLocations.add(1, l);
+                            adapter.notifyItemInserted(1);
+                        } else {
+                            if(arlLocations.size() == 0){
+                                arlLocations.add(0, l);
+                                adapter.notifyItemInserted(0);
+                            } else {
+                                arlLocations.add(l);
+                                adapter.notifyItemInserted(1);
+                            }
+                        }
+
                         adapter.notifyDataSetChanged();
                         pbCircle.setVisibility(View.INVISIBLE);
                     } catch (Exception e) {
@@ -284,7 +296,7 @@ public class LocationActivity extends AppCompatActivity {
                 insertDefault();
                 JSONArray jsonArray = new JSONArray(sharedPref.getString("jLocations", ""));
                 for(int i = 0; i < jsonArray.length(); i++){
-                    insertSingleLocation(jsonArray.getString(i));
+                    insertSingleLocation(jsonArray.getString(i), 0);
                 }
                 Log.d(TAG, "fetchData Default: " + jsonArray);
             } else {

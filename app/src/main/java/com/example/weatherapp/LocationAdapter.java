@@ -85,7 +85,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             alert.show();
             return true;
         });
-
     }
 
 
