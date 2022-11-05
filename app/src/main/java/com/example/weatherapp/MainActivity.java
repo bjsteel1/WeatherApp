@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, Settings.class));
         });
 
-        // Fetch the data & populate the views TODO: Pull location from shared prefs
+        // Fetch the data & populate the views TODO: Pull location from sharedprefs
         fetchData("Saginaw, MI");
     }
 
