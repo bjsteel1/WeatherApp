@@ -183,6 +183,9 @@ public class LocationActivity extends AppCompatActivity {
             String url = url_1 + jsonArray.getString(i) + url_2;
             Log.d(TAG, "insertMassLocations: " + jsonArray.getString(i));
             pbCircle.setVisibility(View.VISIBLE);
+            Location l = new Location();
+            arlLocations.add(l);
+            adapter.notifyDataSetChanged();
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                     response -> {
                         try {
@@ -211,10 +214,10 @@ public class LocationActivity extends AppCompatActivity {
                                     .getString("icon");
 
                             //Create location
-                            Location l = new Location(strName + ", " + strCountry,
+                            l.loadLocation(strName + ", " + strCountry,
                                     dblLatitude, dblLongitude, dblF_Temperature, dblC_Temperature,
                                     "https:" + jImg);
-                            arlLocations.add(l);
+
                             //Update from position 0
                             adapter.notifyItemInserted(0);
                             adapter.notifyItemRangeChanged(0, adapter.getItemCount());
