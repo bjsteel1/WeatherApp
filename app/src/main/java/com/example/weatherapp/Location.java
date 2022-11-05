@@ -1,5 +1,6 @@
 package com.example.weatherapp;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Location {
@@ -17,6 +18,10 @@ public class Location {
         this.f_temperature = f_temperature;
         this.c_temperature = c_temperature;
         this.picURL = picURL;
+    }
+
+    public Location(String cityName){
+        this.cityName = cityName;
     }
 
     @Override
