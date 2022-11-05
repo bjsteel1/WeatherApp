@@ -53,7 +53,6 @@ public class LocationActivity extends AppCompatActivity {
     ArrayList<String> arlDefaultLocations = new ArrayList<>();
     String TAG = "MYTAG";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,7 +139,7 @@ public class LocationActivity extends AppCompatActivity {
                                 dblLatitude, dblLongitude, dblF_Temperature, dblC_Temperature,
                                 "https:" + jImg);
 
-                        if(index == 1){
+                       /* if(index == 1){
                             arlLocations.add(1, l);
                             adapter.notifyItemInserted(1);
                         } else {
@@ -152,7 +151,11 @@ public class LocationActivity extends AppCompatActivity {
                                 adapter.notifyItemInserted(1);
                             }
                         }
+                        */
 
+                        arlLocations.add(1, l);
+                        adapter.notifyItemInserted(1);
+                        adapter.notifyItemRangeChanged(0, adapter.getItemCount());
                         adapter.notifyDataSetChanged();
                         pbCircle.setVisibility(View.INVISIBLE);
                     } catch (Exception e) {
@@ -174,7 +177,6 @@ public class LocationActivity extends AppCompatActivity {
                 });
         queue.add(request);
     }
-
 
     public void insertMassLocations(JSONArray jsonArray) throws JSONException {
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -215,6 +217,7 @@ public class LocationActivity extends AppCompatActivity {
                             arlLocations.add(l);
                             //Update from position 0
                             adapter.notifyItemInserted(0);
+                            adapter.notifyItemRangeChanged(0, adapter.getItemCount());
                             adapter.notifyDataSetChanged();
                             pbCircle.setVisibility(View.INVISIBLE);
                         } catch (Exception e) {
@@ -295,9 +298,11 @@ public class LocationActivity extends AppCompatActivity {
             if(strJSON.equalsIgnoreCase("EMPTY")){
                 insertDefault();
                 JSONArray jsonArray = new JSONArray(sharedPref.getString("jLocations", ""));
-                for(int i = 0; i < jsonArray.length(); i++){
+            /*    for(int i = 0; i < jsonArray.length(); i++){
                     insertSingleLocation(jsonArray.getString(i), 0);
                 }
+             */
+                insertMassLocations(jsonArray);
                 Log.d(TAG, "fetchData Default: " + jsonArray);
             } else {
                 //Insert locations into the adapter
