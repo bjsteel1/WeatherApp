@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 //        lstPerson.setAdapter(adapter);
 
         //ivSearch onClickListener that brings the user to the LocationActivity when the
-        //magnifying glass image is clicked
+        //magnifying glass image is clicked TODO: Implicit intent?
         ivSearch.setOnClickListener(view -> {
             startActivity(new Intent(MainActivity.this, LocationActivity.class));
         });
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, Settings.class));
         });
 
-        // Fetch the data & populate the views TODO: Pull location from sharedprefs
+        // Fetch the data & populate the views
         fetchData(defaultLocation);
     }
 
@@ -131,13 +131,16 @@ public class MainActivity extends AppCompatActivity {
         setAllVisibility(View.INVISIBLE);
         pbLoading.setVisibility(View.VISIBLE);
 
-        String url = "https://api.weatherapi.com/v1/forecast.json?key=0d2ee64c9feb4ccc9ff23426222810&q=" + location + "&days=" + forecastDays + "&aqi=no&alerts=no";
+        String url = getResources().getString(R.string.url_part1) + location + "&days=" + forecastDays + "&aqi=no&alerts=no";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 url,null,
                 response -> {
                     try {
                             JSONObject jLocation = response.getJSONObject("location");
-                            city = jLocation.getString("name") + ", " + jLocation.getString("region");
+                            String strCountry = jLocation.getString("country");
+                            if (strCountry.equalsIgnoreCase("United States of America"))
+                                strCountry = "USA";
+                            city = jLocation.getString("name") + ", " + strCountry;
                             double lat = jLocation.getDouble("lat");
                             double lon = jLocation.getDouble("lon");
                             txtLocationInfo = "Current Location: " + lat + "°N, " + lon + " °W";
