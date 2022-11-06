@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView ivSearch;
     ImageView ivClock;
     ImageView ivSettings;
+    ImageView ivPickLocation;
     ImageView ivPic;
 
     //create necessary text views for main activity
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         ivClock.setImageResource(R.drawable.clock);
         ivSettings = findViewById(R.id.ivSettings);
         ivSettings.setImageResource(R.drawable.settings);
+        ivPickLocation = findViewById(R.id.ivPickLocation);
         ivPic = findViewById(R.id.ivPic);
 
         //initializing text views
@@ -100,12 +102,17 @@ public class MainActivity extends AppCompatActivity {
 //        adapter = new LocationActivity.LocationAdapter(arrLocation, this);
 //        lstPerson.setAdapter(adapter);
 
-        //ivSearch onClickListener that brings the user to the LocationActivity when the
-        //magnifying glass image is clicked TODO: Implicit intent?
+        //ivSearch TODO: Implicit intent?
         ivSearch.setOnClickListener(view -> {
             startActivity(new Intent(MainActivity.this, LocationActivity.class));
         });
+
+        //ivPickLocation onClickListener that brings the user to the LocationActivity when the
+        //globe image or location name is clicked
         tvLocationName.setOnClickListener(view->{
+            startActivity(new Intent(MainActivity.this, LocationActivity.class));
+        });
+        ivPickLocation.setOnClickListener(view -> {
             startActivity(new Intent(MainActivity.this, LocationActivity.class));
         });
 
@@ -180,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         tvTemp.setText(temp + "\u00B0 " + tempScale);
         tvTempFeels.setText("Feels like: " + tempFeels + "\u00B0 " + tempScale);
         tvTempHighLow.setText("H: " + tempHigh + "\u00B0 " + tempScale + "     L: " + tempLow + "\u00B0 " + tempScale);
-        tvTempWind.setText(windSpeed + " mph");
+        tvTempWind.setText("Windspeed: " + windSpeed + " mph");
         Picasso.get().load(imageURL).into(ivPic);
 
         setAllVisibility(View.VISIBLE);
