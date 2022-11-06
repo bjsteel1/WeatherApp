@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="20dp">
+    android:padding="20dp"
+    android:background="@drawable/location_border_background">
 
     <ImageView
         android:id="@+id/ivWeatherType"
