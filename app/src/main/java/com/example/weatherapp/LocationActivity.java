@@ -117,6 +117,12 @@ public class LocationActivity extends AppCompatActivity {
         });
         //Set OnClick Listener for click event on back image, and send user back to Home page
         imgBack.setOnClickListener(view -> {
+            //Save set/default location into String
+            // Default location is the top item in the RV. Save into String
+            SharedPreferences sharedSetLocation = getSharedPreferences("SharedPrefDefault", MODE_PRIVATE);
+            SharedPreferences.Editor spSetEditor = sharedSetLocation.edit();
+            spSetEditor.putString("default_location", adapter.getItem(0));
+            spSetEditor.apply();
             startActivity(new Intent(LocationActivity.this, MainActivity.class));
         });
         //Set OnClick listener for click event on reset image, and delete every item in the
@@ -344,10 +350,6 @@ public class LocationActivity extends AppCompatActivity {
         //Save locations into JSON Array
         SharedPreferences sharedPref = getSharedPreferences("SharedLoc", MODE_PRIVATE);
         SharedPreferences.Editor spEditor = sharedPref.edit();
-        //Save set/default location into String
-        SharedPreferences sharedSetLocation = getSharedPreferences("SharedPrefDefault", MODE_PRIVATE);
-        SharedPreferences.Editor spSetEditor = sharedSetLocation.edit();
-
         JSONArray jsonArray = new JSONArray();
         try{
             //Get every item in the adapter and save each into the JSON Array
@@ -357,11 +359,8 @@ public class LocationActivity extends AppCompatActivity {
         } catch (Exception e){
             e.printStackTrace();
         }
-        // Default location is the top item in the RV. Save into String
-        spSetEditor.putString("default_location", adapter.getItem(0));
         // All locations save into JSON Array
         spEditor.putString("jLocations", jsonArray.toString());
         spEditor.apply();
-        spSetEditor.apply();
     }
 }

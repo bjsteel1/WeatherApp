@@ -65,7 +65,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         //Getting strange errors when using the parameter, position, when trying to get the index
         //  of the current item being clicked. Using a redundant int variable seems to fix it
         int p = position;
-        holder.txtCity.setOnLongClickListener(view -> {
+        holder.txtLayout.setOnLongClickListener(view -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage("Would you like to set " + holder.txtCity.getText() + " as the default location?")
                             .setCancelable(false).setPositiveButton("Yes", (dialogInterface, i) -> {
@@ -91,6 +91,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     class LocationViewHolder extends RecyclerView.ViewHolder{
         TextView txtCity;
         TextView txtTemperature;
+        TextView txtLayout;
         ImageView imgSetLocation;
         ImageView imgForecast;
 
@@ -98,6 +99,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
             super(itemView);
             txtCity = itemView.findViewById(R.id.txtCity);
             txtTemperature = itemView.findViewById(R.id.txtTemperature);
+            txtLayout = itemView.findViewById(R.id.txtLayout);
             imgSetLocation = itemView.findViewById(R.id.imgSetLocation);
             imgForecast = itemView.findViewById(R.id.imgForecast);
         }
