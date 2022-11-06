@@ -19,6 +19,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Location> arrLocation;
     RequestQueue queue;
     LocationAdapter adapter;
-    String tempScale, city, txtLocationInfo, condition, imageURL;
-    int temp, tempFeels, tempHigh, tempLow, windSpeed;
+    String defaultLocation, tempScale, city, txtLocationInfo, condition, imageURL;
+    int forecastDays, temp, tempFeels, tempHigh, tempLow, windSpeed;
 
     SharedPreferences sharedPreferences;
 
@@ -63,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
         // Get shared prefs
         sharedPreferences = getSharedPreferences("SharedPrefs",MODE_PRIVATE);
         tempScale = sharedPreferences.getString("Unit","F");
+        forecastDays = Integer.parseInt(sharedPreferences.getString("Day","7"));
+
+        SharedPreferences sharedSetLocation = getSharedPreferences("SharedPrefDefault", MODE_PRIVATE);
+        defaultLocation = sharedSetLocation.getString("default_location","Saginaw, USA");
 
         //initializing image views
         ivLocation = findViewById(R.id.ivLocation);
@@ -84,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
         tvTempFeels = findViewById(R.id.tvTempFeels);
         tvTempHighLow = findViewById(R.id.tvTempHighLow);
         tvTempWind = findViewById(R.id.tvTempWind);
+
+        tvForecast.setText(forecastDays + "-Day Forecast");
 
         pbLoading = findViewById(R.id.pbLoading);
 
@@ -115,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Fetch the data & populate the views TODO: Pull location from sharedprefs
-        fetchData("Saginaw, MI");
+        fetchData(defaultLocation);
     }
 
     // Call API and load in all weather data to variables
@@ -124,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         setAllVisibility(View.INVISIBLE);
         pbLoading.setVisibility(View.VISIBLE);
 
-        String url = "https://api.weatherapi.com/v1/forecast.json?key=0d2ee64c9feb4ccc9ff23426222810&q=" + location + "&days=7&aqi=no&alerts=no";
+        String url = "https://api.weatherapi.com/v1/forecast.json?key=0d2ee64c9feb4ccc9ff23426222810&q=" + location + "&days=" + forecastDays + "&aqi=no&alerts=no";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
                 url,null,
                 response -> {
@@ -145,6 +152,11 @@ public class MainActivity extends AppCompatActivity {
                             windSpeed =  jCurrent.getInt("wind_mph");
                             imageURL = "https:" + jCondition.getString("icon");
                             populateViews();
+
+                            // Set listview to display forecast
+                            ForecastAdapter adapter = new ForecastAdapter(response.getJSONObject("forecast").getJSONArray("forecastday"),
+                                    this, tempScale);
+                            lstForecast.setAdapter(adapter);
                     } catch (JSONException e) {
                         Log.d("WeatherApp", e.getMessage());
                         e.printStackTrace();
