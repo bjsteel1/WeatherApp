@@ -132,17 +132,17 @@ public class LocationActivity extends AppCompatActivity {
         imgResetLocs.setOnClickListener(view -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("Would you like to reset the list to default locations?")
-                        .setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                try {
-                                    arlLocations.clear();
-                                    adapter.notifyDataSetChanged();
-                                    insertDefault();
-                                    fetchData();
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                        .setCancelable(false).setPositiveButton("Yes", (dialogInterface, i) -> {
+                            try {
+                                //Clear all locations and set the default JSON array of locations
+                                //  Get the default data
+                                arlLocations.clear();
+                                arlDefaultLocations.clear();
+                                adapter.notifyDataSetChanged();
+                                insertDefault();
+                                fetchData();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
                         }).setNegativeButton("No", (dialogInterface, i) -> dialogInterface.cancel());
                 AlertDialog alert = builder.create();

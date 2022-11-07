@@ -3,6 +3,9 @@ package com.example.weatherapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     //create necessary image views for main activity
@@ -77,7 +81,23 @@ public class MainActivity extends AppCompatActivity {
         //ivSearch onClickListener that brings the user to the LocationActivity when the
         //magnifying glass image is clicked
         ivSearch.setOnClickListener(view -> {
-            startActivity(new Intent(MainActivity.this, LocationActivity.class));
+            //start the url with the google search
+            String url = "https://www.google.com/search?q=";
+            //remove the comma(s) from the location name
+            String cityState = tvLocationName.getText().toString().replace(",", "");
+            //split the different words into locationArray
+            String locationArray[] = cityState.split(" ");
+            //loop through each word in the array except the last
+            for(int i=0; i<locationArray.length-1; i++){
+                //append it to the google url, followed by %20
+                url += locationArray[i].toLowerCase(Locale.ROOT) + "%20";
+            }
+            //only append the last word from the locationArray to the url, without the 20%
+            url+= locationArray[locationArray.length-1].toLowerCase(Locale.ROOT);
+            //Create a new intent to open the url within google chrome
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            //start the activity
+            startActivity(intent);
         });
 
         //ivClock onClickListener that brings the user to the HourlyActivity when the
