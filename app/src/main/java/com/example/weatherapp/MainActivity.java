@@ -3,11 +3,6 @@ package com.example.weatherapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-<<<<<<< Updated upstream
-=======
-import android.content.SharedPreferences;
-import android.net.Uri;
->>>>>>> Stashed changes
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,10 +17,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     //create necessary image views for main activity
@@ -85,17 +77,7 @@ public class MainActivity extends AppCompatActivity {
         //ivSearch onClickListener that brings the user to the LocationActivity when the
         //magnifying glass image is clicked
         ivSearch.setOnClickListener(view -> {
-            String url = "https://www.google.com/search?q=";
-            String cityState = tvLocationName.getText().toString().replace(",", "");
-            System.out.println(cityState);
-            String locationArray[] = cityState.split(" ");
-            for(int i=0; i<locationArray.length-1; i++){
-                url += locationArray[i].toLowerCase(Locale.ROOT) + "%20";
-            }
-            url+= locationArray[locationArray.length-1].toLowerCase(Locale.ROOT);
-            System.out.println(url);
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);
+            startActivity(new Intent(MainActivity.this, LocationActivity.class));
         });
 
         //ivClock onClickListener that brings the user to the HourlyActivity when the
