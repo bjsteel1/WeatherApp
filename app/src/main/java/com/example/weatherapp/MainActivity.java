@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     //create necessary image views for main activity
@@ -104,7 +106,17 @@ public class MainActivity extends AppCompatActivity {
 
         //ivSearch TODO: Implicit intent?
         ivSearch.setOnClickListener(view -> {
-            startActivity(new Intent(MainActivity.this, LocationActivity.class));
+            String url = "https://www.google.com/search?q=";
+            String cityState = tvLocationName.getText().toString().replace(",", "");
+            System.out.println(cityState);
+            String locationArray[] = cityState.split(" ");
+            for(int i=0; i<locationArray.length-1; i++){
+                url += locationArray[i].toLowerCase(Locale.ROOT) + "%20";
+            }
+            url+= locationArray[locationArray.length-1].toLowerCase(Locale.ROOT);
+            System.out.println(url);
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
         });
 
         //ivPickLocation onClickListener that brings the user to the LocationActivity when the
