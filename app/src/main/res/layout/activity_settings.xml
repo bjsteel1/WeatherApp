@@ -6,6 +6,85 @@
     android:layout_height="match_parent"
     tools:context=".Settings">
 
+<<<<<<< Updated upstream
+=======
+    <RadioGroup
+        android:id="@+id/rdgTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/rdgDay"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/txtSettings">
+
+        <RadioButton
+            android:id="@+id/rdbF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="°F" />
+
+        <RadioButton
+            android:id="@+id/rdbC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="°C" />
+
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/rdgHour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/btnReset"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/rdgDay">
+
+        <RadioButton
+            android:id="@+id/rdb12Hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="12 Hour" />
+
+        <RadioButton
+            android:id="@+id/rdb24Hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:text="24 Hour" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/rdgDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/rdgHour"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/rdgTemp">
+
+        <RadioButton
+            android:id="@+id/rdb7Day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="7 Day" />
+
+        <RadioButton
+            android:id="@+id/rdb14Day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="14 Day" />
+    </RadioGroup>
+
+>>>>>>> Stashed changes
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
