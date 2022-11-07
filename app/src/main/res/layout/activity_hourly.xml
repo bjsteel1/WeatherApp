@@ -14,14 +14,14 @@
         android:layout_marginTop="16dp"
         android:text="Saginaw, Mi"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivHome"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtMainTemp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
+        android:layout_marginStart="32dp"
         android:text="70° F"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -39,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtLocation" />
 
     <TextView
-        android:id="@+id/txtCoordinated"
+        android:id="@+id/txtCoord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -50,7 +50,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtMainTemp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/rycHourly"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -72,7 +72,7 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="32dp"
         android:text="Weather"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
@@ -103,4 +103,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textView7" />
+
+    <ImageView
+        android:id="@+id/ivHome"
+        android:layout_width="42dp"
+        android:layout_height="37dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/homeback_icon" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,10 +10,11 @@
         android:id="@+id/ivSettings"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.608"
         app:srcCompat="@drawable/settings" />
 
     <ImageView
@@ -22,7 +23,7 @@
         android:layout_height="45dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toStartOf="@+id/ivSettings"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/clock" />
 
@@ -37,13 +38,12 @@
         android:id="@+id/tvLocationName"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
         android:gravity="center|right"
         android:text="Saginaw, MI"
         android:textColor="#000000"
         android:textSize="34sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/ivSearch"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,15 +58,12 @@
 
     <ImageView
         android:id="@+id/ivSearch"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="32dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/tvLocationName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tvLocationName"
-        app:layout_constraintTop_toTopOf="@+id/tvLocationName"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
         app:srcCompat="@drawable/search" />
 
     <TextView
@@ -76,8 +73,8 @@
         android:text="Current Location 43.4195° N, 83.9508° W"
         android:textColor="#000000"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintEnd_toEndOf="@+id/ivSearch"
-        app:layout_constraintStart_toEndOf="@+id/ivLocation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvLocationName" />
 
     <ImageView
@@ -167,7 +164,7 @@
         android:id="@+id/tvTempWind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Windspeed: 4.4"
+        android:text="Windspeed: 4.4 mph"
         android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/lstForecast"
@@ -184,10 +181,12 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/ivPic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
+        android:minWidth="128dp"
+        android:minHeight="128dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3"
@@ -197,11 +196,31 @@
         android:id="@+id/tvImgDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="Clear"
         android:textColor="#000000"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/ivPic" />
+
+    <ProgressBar
+        android:id="@+id/pbLoading"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivPickLocation"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivClock"
+        app:layout_constraintEnd_toStartOf="@+id/ivClock"
+        app:layout_constraintTop_toTopOf="@+id/ivClock"
+        app:srcCompat="@drawable/location_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,3 +1,7 @@
+/**
+ * Location class.
+ * @author: Jon Maddocks
+ */
 package com.example.weatherapp;
 
 import java.util.ArrayList;
@@ -11,6 +15,16 @@ public class Location {
     double c_temperature;
     String picURL;
 
+    //Default constructor. Set Location to default elements
+    public Location(){
+        cityName = "Loading";
+        latitude = 0;
+        longitude = 0;
+        f_temperature = 0;
+        c_temperature = 0;
+        picURL = "https://www.freeiconspng.com/thumbs/load-icon-png/load-icon-png-8.png";
+    }
+
     public Location(String cityName, double latitude, double longitude, double f_temperature, double c_temperature, String picURL) {
         this.cityName = cityName;
         this.latitude = latitude;
@@ -18,10 +32,6 @@ public class Location {
         this.f_temperature = f_temperature;
         this.c_temperature = c_temperature;
         this.picURL = picURL;
-    }
-
-    public Location(String cityName){
-        this.cityName = cityName;
     }
 
     @Override
@@ -35,5 +45,14 @@ public class Location {
     @Override
     public int hashCode() {
         return Objects.hash(cityName, latitude, longitude, f_temperature, c_temperature);
+    }
+    //Set location data into location
+    public void loadLocation(String cityName, double latitude, double longitude, double f_temperature, double c_temperature, String picURL){
+        this.cityName = cityName;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.f_temperature = f_temperature;
+        this.c_temperature = c_temperature;
+        this.picURL = picURL;
     }
 }
