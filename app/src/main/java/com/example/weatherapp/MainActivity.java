@@ -7,6 +7,9 @@ import android.content.Intent;
 =======
 import android.content.SharedPreferences;
 import android.net.Uri;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 import android.os.Bundle;
 import android.widget.Button;
@@ -94,6 +97,18 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(url);
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(intent);
+<<<<<<< Updated upstream
+=======
+        });
+
+        //ivPickLocation onClickListener that brings the user to the LocationActivity when the
+        //globe image or location name is clicked
+        tvLocationName.setOnClickListener(view->{
+            startActivity(new Intent(MainActivity.this, LocationActivity.class));
+        });
+        ivPickLocation.setOnClickListener(view -> {
+            startActivity(new Intent(MainActivity.this, LocationActivity.class));
+>>>>>>> Stashed changes
         });
 
         //ivClock onClickListener that brings the user to the HourlyActivity when the
