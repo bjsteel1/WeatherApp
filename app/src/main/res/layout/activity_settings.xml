@@ -20,6 +20,7 @@
             android:id="@+id/rdbF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="°F" />
 
         <RadioButton
@@ -44,6 +45,7 @@
             android:id="@+id/rdb12Hour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="12 Hour" />
 
         <RadioButton
@@ -68,6 +70,7 @@
             android:id="@+id/rdb7Day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="7 Day" />
 
         <RadioButton
@@ -111,7 +114,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Location Forecast Day Options:"
+        android:text="Forecast Day Options:"
         app:layout_constraintBottom_toTopOf="@+id/txtLocationTime"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/txtTempOptions" />
@@ -122,7 +125,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
-        android:text="Location Forecast Time Options:"
+        android:text="Forecast Time Options:"
         app:layout_constraintBottom_toTopOf="@+id/btnReset"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/txtLocationDay" />
