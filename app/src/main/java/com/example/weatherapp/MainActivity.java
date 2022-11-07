@@ -106,16 +106,22 @@ public class MainActivity extends AppCompatActivity {
 
         //ivSearch TODO: Implicit intent?
         ivSearch.setOnClickListener(view -> {
+            //start the url with the google search
             String url = "https://www.google.com/search?q=";
+            //remove the comma(s) from the location name
             String cityState = tvLocationName.getText().toString().replace(",", "");
-            System.out.println(cityState);
+            //split the different words into locationArray
             String locationArray[] = cityState.split(" ");
+            //loop through each word in the array except the last
             for(int i=0; i<locationArray.length-1; i++){
+                //append it to the google url, followed by %20
                 url += locationArray[i].toLowerCase(Locale.ROOT) + "%20";
             }
+            //only append the last word from the locationArray to the url, without the 20%
             url+= locationArray[locationArray.length-1].toLowerCase(Locale.ROOT);
-            System.out.println(url);
+            //Create a new intent to open the url within google chrome
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            //start the activity
             startActivity(intent);
         });
 
